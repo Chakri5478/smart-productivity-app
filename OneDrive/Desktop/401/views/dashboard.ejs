@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="dashboard-container">
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <h1>Welcome, <%= user.email %></h1>
+        <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+
+    <!-- Add Task Form -->
+    <div class="add-task-card">
+        <h2>Add New Task</h2>
+
+        <form action="/add-task" method="POST" class="task-form">
+
+            <input type="text" name="title" placeholder="Task Title" required>
+
+            <textarea name="description" placeholder="Task Details..." rows="3" required></textarea>
+
+            <input type="date" name="dueDate" required>
+
+            <input type="text" name="category" placeholder="Category (Work, Study, Personal)">
+
+            <select name="priority">
+                <option value="Low">Low Priority</option>
+                <option value="Medium" selected>Medium Priority</option>
+                <option value="High">High Priority</option>
+            </select>
+
+            <button type="submit">Add Task</button>
+
+        </form>
+    </div>
+
+    <!-- Task Section -->
+    <div class="task-section">
+
+        <% if (tasks.length === 0) { %>
+            <p class="no-task">No tasks added yet.</p>
+        <% } %>
+
+        <% tasks.forEach(task => { %>
+            <div class="task-card">
+
+                <h3><%= task.title %></h3>
+
+                <p><strong>Description:</strong> <%= task.description %></p>
+
+                <p><strong>Category:</strong> <%= task.category %></p>
+
+                <p>
+                    <strong>Priority:</strong>
+                    <span class="priority <%= task.priority %>">
+                        <%= task.priority %>
+                    </span>
+                </p>
+
+                <p>
+                    <strong>Due Date:</strong>
+                    <%= task.dueDate ? task.dueDate : "Not Set" %>
+                </p>
+
+                <form action="/delete/<%= task.id %>" method="POST">
+                    <button class="delete-btn">Delete</button>
+                </form>
+
+            </div>
+        <% }) %>
+
+    </div>
+
+</div>
+
+</body>
+</html>
